@@ -1,0 +1,87 @@
+import random
+
+grades = 0
+popularity = 0
+
+txt_sim = 'uni_sim.txt'
+
+def uni_sim():
+    return random.choice(["1","2"])
+
+def load_sim(grades, popularity):
+    try: 
+        with open(txt_sim,"r") as file:
+            data = file.read().splitlines()
+            popularity = int(data[0])
+            grades = int(data[1])
+        return grades, popularity
+    except FileNotFoundError:
+        print("Nothing Found")
+        return 0, 0
+    
+def save_file(grades, popularity):
+    with open(txt_sim, "w") as file:
+        file.write(f"{grades}\n")
+        file.write(f"{popularity}")
+
+def delete_save(grades, popularity):
+    with open(txt_sim, "w") as file:
+        file.write("0\n0")
+
+def start_playing():
+    global grades, popularity
+    print("-----SIMULATE UNI LIFE!-----")
+    popularity, grades = load_sim(grades, popularity)
+
+    while True:
+        print(f"Grades: {grades}\nPopularity: {popularity}")
+        print("[STUDY] Study for your exams!\n[PARTY] GO TO THE CLUB!! WHO NEEDS TO STUDY ANYWAYS??\n[SAVE] Save and exit simulator.\n[DELETE] Erase progress and exit simulator.")
+        choice = str(input("What choice will you make? : "))
+
+        if choice == "STUDY":
+            outcome = uni_sim()
+            if outcome == "1":
+                change_grades = random.randint(10,15)
+                grades += change_grades
+                change_popularity = random.randint(1,10)
+                popularity -= change_popularity
+                print(f"\nYour teacher admires your effort! But your friends think you're boring.\n")
+                save_file(grades, popularity)
+            else:
+                change_grades = random.randint(10,15)
+                grades += change_grades
+                change_popularity = random.randint(1,10)
+                popularity += change_popularity
+                print(f"\nYour friends understood and respect you for keep your priorities straight!\n")
+                save_file(grades, popularity)
+            
+        elif choice == "PARTY":
+            outcome = uni_sim()
+            if outcome == "1":
+                change_grades = random.randint(10,15)
+                grades -= change_grades
+                change_popularity = random.randint(1,10)
+                popularity += change_popularity
+                print(f"\nUh oh! You should have studied.. You're the life of the party tho!!!\n")
+                save_file(grades, popularity)
+            else:
+                change_grades = random.randint(10,15)
+                grades += change_grades
+                change_popularity = random.randint(1,10)
+                popularity += change_popularity
+                print(f"\nYou met your lecturer at the club and he gave you extra marks on the exam for being fun!\n")
+                save_file(grades, popularity)
+
+        elif choice == "SAVE":
+            save_file(grades, popularity)
+            print("Progress saved!")
+            break
+
+        elif choice == "DELETE":
+            delete_save(grades, popularity)
+            print("Progress erased!")
+            break
+
+start_playing()
+
+
